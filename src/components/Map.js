@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import ReactMapGL, { Source, Layer} from 'react-map-gl';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
 
 //import firebase from "firebase/app";
 import * as turf from '@turf/turf'
@@ -17,6 +19,9 @@ import {houseCollection} from "../data/houses.js"
 import db from '../utils/firestore'
 
 const Map = ({sendDataToParent}) => {
+  mapboxgl.workerClass = MapboxWorker; // Need this until https://github.com/mapbox/mapbox-gl-js-docs/pull/461 is approved
+  // Issue: https://github.com/visgl/react-map-gl/issues/1266
+
   const [data, setData] = useState(null);
   const [hoveredFeature, setHoveredFeature] = useState(null);
   const [viewport, setViewport] = useState({
@@ -131,10 +136,12 @@ const Map = ({sendDataToParent}) => {
         onClick={_onClick}
         attributionControl={false}
         onViewportChange={nextViewport => setViewport(nextViewport)}
-        antialias={true}
       >
+        
         <Source type="geojson" data={data}>
+          {/* Polygon main layer */}
           <Layer {...dataLayer} />
+          {/* Polygon border layer */}
           <Layer
             id='lineLayer2'
             type='line'
@@ -149,15 +156,16 @@ const Map = ({sendDataToParent}) => {
               'line-width': 1
             }}
           />
+          {/* Polygon label layer */}
           <Layer
             type="symbol"
             layout={{ 
               "text-size": 13,
               "text-field": '{label}',
             }}>
-          </Layer>
-           
+          </Layer> 
         </Source>
+        {/* Property border layer */}
         <Source id='polylineLayer' type='geojson' data={lineCollection}>
           <Layer
             id='lineLayer'
@@ -175,6 +183,7 @@ const Map = ({sendDataToParent}) => {
           />
         </Source>
        
+        {/* House layer */}
         <Source type="geojson" data={houseCollection}>
           <Layer
             id='polygonLayer'
@@ -185,7 +194,7 @@ const Map = ({sendDataToParent}) => {
             }}
           />
         </Source>
-         {_renderTooltip()}
+        {_renderTooltip()}
       </ReactMapGL>
   );
   
