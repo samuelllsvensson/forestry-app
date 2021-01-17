@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import db from '../utils/firestore.js' 
+import {firestore} from "../utils/firestore.js";
 import {tableText} from "../utils/tooltips.js"
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -106,7 +106,7 @@ function AgeTableComponent() {
 
   useEffect(() => {
     let temp = []
-    db.collection("ages").orderBy("orderId").get().then(function(querySnapshot) {
+    firestore.collection("ages").orderBy("orderId").get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
           setLoading(false);
           temp.push(createData(doc.data().ageRange, 
@@ -143,7 +143,7 @@ function AgeTableComponent() {
 
   const onSaveEditMode = id => {
     const found = rows.find(element => element.id === id);
-    db.collection("ages").doc(found.ageRange).update(found)
+    firestore.collection("ages").doc(found.ageRange).update(found)
     .then(function() {
         console.log("Document successfully written!");
     })

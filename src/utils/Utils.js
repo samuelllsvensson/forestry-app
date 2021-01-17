@@ -1,6 +1,6 @@
 
 import firebase from "firebase/app";
-import db from './firestore.js'
+import {firestore} from './firestore.js'
 
 export const geoPointToArrayList = (input) => {
     let output = []
@@ -34,7 +34,7 @@ export function geoJsonToFirestore(featurecollection) {
      areaID: featurecollection.features[x].id
      };
 
-     db.collection("areas").doc(x.toString()).set(output[x])
+     firestore.collection("areas").doc(x.toString()).set(output[x])
      .then(function() {
        console.log("Document successfully written!");
      })

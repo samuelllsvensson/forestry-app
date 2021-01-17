@@ -3,20 +3,16 @@ import React, { useEffect, useState } from 'react';
 import ReactMapGL, { Source, Layer} from 'react-map-gl';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
-
-//import firebase from "firebase/app";
 import * as turf from '@turf/turf'
 
 import {dataLayer} from '../utils/map-style.js';
 
 import {geoPointToArrayList, geoJsonToFirestore} from '../utils/Utils.js'
 // import {featurecollection} from "../geojsonSource.js"
-import {featurecollection} from "../data/areas.js"
-import {lineCollection} from "../data/border.js"
-
-import {houseCollection} from "../data/houses.js"
-
-import db from '../utils/firestore'
+//import {featurecollection} from "../data/areas.js"
+import {lineCollection} from "../assets/border.js"
+import {houseCollection} from "../assets/houses.js"
+import {firestore} from "../utils/firestore.js";
 
 const Map = ({sendDataToParent}) => {
   mapboxgl.workerClass = MapboxWorker; // Need this until https://github.com/mapbox/mapbox-gl-js-docs/pull/461 is approved
@@ -41,7 +37,7 @@ const Map = ({sendDataToParent}) => {
 
  
     // Read data from firestore for drawing map
-    db.collection("areas").get().then(async function(querySnapshot) {
+    firestore.collection("areas").get().then(async function(querySnapshot) {
       await Promise.all(querySnapshot.docs.map(async (doc) => {
           //console.log(doc.id, " => ", doc.data());
           let newCoords = geoPointToArrayList(doc.data().coordinates)

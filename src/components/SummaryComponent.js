@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import db from '../utils/firestore.js' // <----
-import firebase from "firebase/app";
+import {firestore} from "../utils/firestore.js";
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
 
 import { Chart } from 'primereact/chart';
 
@@ -42,7 +40,7 @@ const SummaryComponent = () => {
         
     }
     useEffect(() => {
-        // db.collection("summary").doc("info").set(obj)
+        // firestore.collection("summary").doc("info").set(obj)
         //     .then(function() {
         //     console.log("Document successfully written!");
         //     })
@@ -50,7 +48,7 @@ const SummaryComponent = () => {
         //     console.error("Error writing document: ", error);
         //     });
 
-        db.collection("summary").doc("info").get()
+        firestore.collection("summary").doc("info").get()
         .then(function(doc) {
             if (doc.exists) {
                 //console.log("Document data:", doc.data());
@@ -158,16 +156,16 @@ const SummaryComponent = () => {
                     </Grid>
                     <Grid item xs={6} sm={6}>
                         <Typography variant="h6" gutterBottom>
-                            Total skogsmark: {summaryData.volDistribution.totVolume} ha
+                            Totalt virkesförråd: {summaryData.volDistribution.totVolume} m3sk
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            Tall: {summaryData.volDistribution.pine} ha
+                            Tall: {summaryData.volDistribution.pine} m3sk
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            Ordinära lövträd: {summaryData.volDistribution.leaf} ha
+                            Ordinära lövträd: {summaryData.volDistribution.leaf} m3sk
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            Gran: {summaryData.volDistribution.pine} ha
+                            Gran: {summaryData.volDistribution.fir} m3sk
                         </Typography>
 
                         <Typography variant="subtitle2" gutterBottom>

@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ContentEditable from 'react-contenteditable'
-import db from '../utils/firestore.js' // <----
-import firebase from "firebase/app";
+import {firestore} from "../utils/firestore.js";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -27,7 +26,7 @@ const MetadataComponent = ({dataParentToChild}) => {
         // console.log(dataParentToChild.toString())
         if (dataParentToChild) {
         
-            db.collection("data").doc(dataParentToChild.toString()).set(metadata)
+            firestore.collection("data").doc(dataParentToChild.toString()).set(metadata)
             .then(function() {
             console.log("Document successfully written!");
             })
@@ -35,7 +34,7 @@ const MetadataComponent = ({dataParentToChild}) => {
             console.error("Error writing document: ", error);
             });
         }
-        db.collection("data").doc(dataParentToChild.toString()).get()
+        firestore.collection("data").doc(dataParentToChild.toString()).get()
         .then(function(doc) {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
