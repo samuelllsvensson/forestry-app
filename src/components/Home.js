@@ -1,25 +1,19 @@
-
-import React, { useEffect, useContext } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { green } from '@material-ui/core/colors';
-import Button from '@material-ui/core/Button';
-import PersonIcon from '@material-ui/icons/Person';
-
+import AppBar from "@material-ui/core/AppBar";
+import Box from "@material-ui/core/Box";
+import { green } from "@material-ui/core/colors";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import { ThemeProvider } from "@material-ui/styles";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../providers/UserProvider";
-import SummaryComponent from './SummaryComponent';
-import AgeTableComponent from './AgeTableComponent';
-import MetadataComponent from './MetadataComponent';
-import Map from './Map';
-import {auth} from "../utils/firestore";
+import { auth } from "../utils/firestore";
+import AgeTable from "./AgeTable";
+import Map from "./Map";
+import MetadataComponent from "./MetadataComponent";
+import SummaryComponent from "./SummaryComponent";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +21,7 @@ const theme = createMuiTheme({
       main: green[800],
     },
     secondary: {
-      main: '#ff9100',
+      main: "#ff9100",
     },
   },
 });
@@ -38,12 +32,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   paper: {
-    padding: theme.spacing(1), 
-    textAlign: 'center',
+    padding: theme.spacing(1),
+    textAlign: "center",
     color: theme.palette.text.secondary,
   },
-  buttonPadding: {    
-    padding: '0px',   
+  buttonPadding: {
+    padding: "0px",
+  },
+  rightAlign: {
+    marginLeft: "auto",
   },
 }));
 
@@ -58,11 +55,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -71,18 +64,14 @@ const Home = () => {
   const classes = useStyles();
   const user = useContext(UserContext);
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const [value, setValue] = React.useState(0);
   const [clickedID, setClickedID] = React.useState(1); // the lifted state
 
-  const sendDataToParent = (index) => { // the callback. Use a better name
-    console.log(index);
+  const sendDataToParent = (index) => {
     setClickedID(index);
     setValue(2);
-
   };
 
   const handleChange = (event, newValue) => {
@@ -91,45 +80,50 @@ const Home = () => {
   return (
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
-        <Grid container spacing={1}>
+        <Grid container>
           <Grid item sm={5}>
-            <Map sendDataToParent={sendDataToParent}/> 
+            <Map sendDataToParent={sendDataToParent} />
           </Grid>
           <Grid item sm={7}>
             <AppBar position="static">
               <Tabs value={value} onChange={handleChange} centered>
                 <Tab label="Sammanställning" />
                 <Tab label="Åldersklassfördelning" />
-                <Tab label="Avdelningsinformation" />
-                <Tab value={false} label={
-              <React.Fragment>
-                <Button 
-                    className={classes.buttonPadding} 
-                    startIcon={<PersonIcon />} 
-                    onClick={() => { auth.signOut() }}>
-                  Logga ut
-                </Button>
-                <span style={{ fontSize: "0.5vw" }}>{user.displayName}</span>
-              </React.Fragment>
-            } />
-
+                <Tab label="Beståndsinformation" />
+                <Tab
+                  value={false}
+                  className={classes.rightAlign}
+                  onClick={() => {
+                    auth.signOut();
+                  }}
+                  label={
+                    <React.Fragment>
+                      Logga ut
+                      <br />
+                      <span style={{ fontSize: "0.5vw" }}>
+                        {user.displayName}
+                      </span>
+                    </React.Fragment>
+                  }
+                />
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-            <Paper><SummaryComponent /></Paper>
+              <Paper>
+                <SummaryComponent />
+              </Paper>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <AgeTableComponent ageData={"test"}/>
+              <AgeTable />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <MetadataComponent dataParentToChild = {clickedID}/>
+              <MetadataComponent dataParentToChild={clickedID} />
             </TabPanel>
-              
           </Grid>
-        </Grid>    
+        </Grid>
       </ThemeProvider>
     </div>
   );
-}
+};
 
 export default Home;

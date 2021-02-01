@@ -1,21 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import Home from './Home'
-import SignIn from './SignIn'
-
 import { UserContext } from "../providers/UserProvider";
+import Home from "./Home";
+import SignIn from "./SignIn";
 
 const Application = () => {
   const user = useContext(UserContext);
-  console.log(user)
-  return (
-    user ?
-      <Home />
-    :
+  return user ? (
+    <Home />
+  ) : (
     <Router>
       <SignIn path="/" />
-    </Router> 
+    </Router>
   );
-}
+};
 
 export default Application;
