@@ -252,14 +252,21 @@ function AgeTable() {
   ageLabels.pop();
   let areaData = rows.map((a) => a.area);
   areaData.pop();
+  let qualityData = rows.map((a) => a.quality);
+  qualityData.pop();
 
   const basicData = {
     labels: ageLabels,
     datasets: [
       {
         label: "Åldersklassfördelning idag",
-        backgroundColor: "#42A5F5",
+        backgroundColor: "#357a38",
         data: areaData,
+      },
+      {
+        label: "Bonitet",
+        backgroundColor: "#6fbf73",
+        data: qualityData,
       },
     ],
   };
