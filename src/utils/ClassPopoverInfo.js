@@ -43,7 +43,6 @@ const ClassPopoverInfo = ({ popType }) => {
   }, []);
 
   const PopoverContent = (type) => {
-    console.log("Type is", type);
     if (type === 1) {
       return (
         <Popover
