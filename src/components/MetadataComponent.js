@@ -135,18 +135,18 @@ const MetadataComponent = ({ dataParentToChild }) => {
       let dbData = {};
       let child = {};
       let numberValue = -1;
-      let test = isNaN(parseInt(value));
+      let isString = isNaN(parseInt(value));
+
+      if (!isString) {
+        numberValue = parseInt(value);
+      }
 
       if (!childObject) {
         // For notes which only contains parentObject
         dbData[parentObject] = value;
       } else {
-        child[childObject] = test ? value : numberValue;
+        child[childObject] = isString ? value : numberValue;
         dbData[parentObject] = child;
-      }
-
-      if (!test) {
-        numberValue = parseInt(value);
       }
 
       firestore
@@ -162,8 +162,7 @@ const MetadataComponent = ({ dataParentToChild }) => {
     }
   };
 
-  const handleSelectChange = (event) => {
-    console.log("Select val: " + event.target.value);
+  const handleGoalClassChange = (event) => {
     firestore
       .collection("data")
       .doc(dataParentToChild.toString())
@@ -178,7 +177,7 @@ const MetadataComponent = ({ dataParentToChild }) => {
     setGoalClass(event.target.value);
   };
 
-  const handleSelectClassChange = (event) => {
+  const handleChopClassChange = (event) => {
     console.log("Select val: " + event.target.value);
     firestore
       .collection("data")
@@ -267,7 +266,7 @@ const MetadataComponent = ({ dataParentToChild }) => {
                       id="demo-simple-select-placeholder-label"
                       value={goalClass ? goalClass : ""}
                       displayEmpty
-                      onChange={handleSelectChange}
+                      onChange={handleGoalClassChange}
                       className={classes.selectEmpty}
                     >
                       {/* Många skogsbruksplaner använder en målklassning där varje avdelning klassas efter hur de ska tillfredställa de båda målen produktion och miljö. Målklassning är också ett krav om skogsbruket är certifierat. */}
@@ -302,7 +301,7 @@ const MetadataComponent = ({ dataParentToChild }) => {
                       id="demo-simple-select-placeholder-label"
                       value={chopClassVal ? chopClassVal : ""}
                       displayEmpty
-                      onChange={handleSelectClassChange}
+                      onChange={handleChopClassChange}
                       className={classes.selectEmpty}
                     >
                       <MenuItem value={"K1"}>K1</MenuItem>
