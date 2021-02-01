@@ -1,24 +1,17 @@
 import React, { Component, createContext } from "react";
 import { auth, generateUserDocument } from "../utils/firestore";
 
-
 export const UserContext = createContext({ user: null });
 
 class UserProvider extends Component {
   state = {
-    user: null
+    user: null,
   };
-
-  
-  
   componentDidMount = async () => {
-    auth.onAuthStateChanged(async userAuth => {
+    auth.onAuthStateChanged(async (userAuth) => {
       const user = await generateUserDocument(userAuth);
       this.setState({ user });
-      console.log(user)
     });
-
-
   };
 
   render() {
