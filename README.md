@@ -21,3 +21,9 @@ This is a web application to maintain and plan future logging operations of my o
 
 The application consists of three main views which can be toggled between and are complemented with the most important part of the project; the map showing all of the different logging regions visualized from GeoJSON data. The map is fully interactive and will display relevant metadata which is fetched from the database. For each region, a table displays for example tree age ranges, species distribution and much more. Another table displays past and future logging operations and is fully interactive for easy management.
 
+#### Images
+<div>
+  <img src="public/homepage.png" width="200" />
+  <img src="public/areainfo.png" width="200" />
+  <img src="public/distribution.png" width="200" />
+</div>
