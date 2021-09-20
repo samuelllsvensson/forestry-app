@@ -23,7 +23,7 @@ The application consists of three main views which can be toggled between and ar
 
 #### Images
 <div>
-  <img src="public/homepage.png" width="200" />
-  <img src="public/areainfo.png" width="200" />
-  <img src="public/distribution.png" width="200" />
+  <img src="public/homepage.png" width="500" />
+  <img src="public/areainfo.png" width="500" />
+  <img src="public/distribution.png" width="500" />
 </div>
